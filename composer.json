@@ -1,0 +1,21 @@
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*"
+        }
+    ],
+    "require": {
+        "typo3/minimal": "^9",
+        "helhum/typo3-console": "^5.7",
+        "helhum/typo3-secure-web": "^0.2.9",
+        "test/sitepackage": "@dev"
+    },
+    "extra": {
+        "typo3/cms": {
+             "root-dir": "private",
+             "web-dir": "public"
+
+        }
+    }
+}

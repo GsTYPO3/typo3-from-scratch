@@ -1,0 +1,7 @@
+/var
+/vendor
+/.idea
+/public
+/private
+
+!/private/typo3conf/LocalConfiguration.php

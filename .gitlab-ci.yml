@@ -1,0 +1,38 @@
+cache:
+  paths:
+  - /cache/composer
+
+stages:
+  - composer
+  - frontend
+  - test
+  - test2
+  - deploy
+  - whatever
+
+"Run composer":
+  stage: composer
+  image: composer:1
+  before_script:
+  - composer config cache-dir /cache/composer
+  script:
+  - composer install
+  artifacts:
+    paths:
+    - ./
+    expire_in: 2 hours
+
+"Run deployment":
+  stage: deploy
+  image: composer:1
+  before_script:
+  - apk add rsync --update
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - echo "$PRIVATE_KEY" | ssh-add -
+  - ssh-keyscan -p 22 test.spooner.zone >> /root/.ssh/known_hosts
+  - composer config cache-dir /cache/composer
+  - composer global require deployer/deployer
+  - composer global require deployer/recipes
+  script:
+  - /tmp/vendor/bin/dep --file=.deploy/deploy.php deploy develop -vvv
